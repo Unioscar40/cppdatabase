@@ -31,6 +31,12 @@ errorString(SocketError err)
     }
 }
 
+bool
+isError(SocketError err)
+{
+    return !(err != SocketError::None);
+}
+
 } // namespace net
 } // namespace core
 } // namespace isock

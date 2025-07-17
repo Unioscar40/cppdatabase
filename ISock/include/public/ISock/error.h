@@ -21,6 +21,8 @@ enum class SocketError {
 
 std::string errorString(SocketError err);
 
+bool isError(SocketError err);
+
 } // namespace net
 } // namespace core
 } // namespace isock
