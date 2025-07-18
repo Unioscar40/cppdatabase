@@ -9,7 +9,6 @@
 
 namespace net {
 namespace core {
-namespace isock {
 
 class WindowsSocket : public ISocket {
 
@@ -36,6 +35,6 @@ public:
     bool isValid() const override;
 };
 
-}
-}
-}
+
+} // namespace core
+} // namespace net

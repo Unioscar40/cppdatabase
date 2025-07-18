@@ -2,7 +2,6 @@
 
 namespace net {
 namespace core {
-namespace isock {
 
 std::string
 errorString(SocketError err) 
@@ -34,9 +33,8 @@ errorString(SocketError err)
 bool
 isError(SocketError err)
 {
-    return !(err != SocketError::None);
+    return (err != SocketError::None);
 }
 
-} // namespace net
 } // namespace core
-} // namespace isock
+} // namespace net

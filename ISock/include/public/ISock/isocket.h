@@ -5,7 +5,7 @@
 
 namespace net {
 namespace core {
-namespace isock {
+
 
 class ISocket {
 public:
@@ -24,6 +24,6 @@ public:
 };
 
 
-} // namespace net
+
 } // namespace core
-} //namespace isock
+} //namespace net

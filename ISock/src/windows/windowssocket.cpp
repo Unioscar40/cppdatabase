@@ -2,7 +2,6 @@
 
 namespace net {
 namespace core {
-namespace isock {
 
 WindowsSocket::WindowsSocket() : _initialize(false), _socket(INVALID_SOCKET) { }
 
@@ -78,6 +77,19 @@ WindowsSocket::accept()
 }
 
 SocketError
+WindowsSocket::connect(const std::string &ip, int port) 
+{
+    sockaddr_in hint;
+    hint.sin_family = AF_INET;
+    hint.sin_port = htons(port);
+    inet_pton(AF_INET, ip.c_str(), &hint.sin_addr);
+
+    if (::connect(_socket, (sockaddr*)&hint, sizeof(hint)) == SOCKET_ERROR)
+        return SocketError::ConnectFailed;
+    return SocketError::None;
+}
+
+SocketError
 WindowsSocket::send(const void *buffer, size_t length)
 {
     const char* bffr = static_cast<const char*>(buffer);
@@ -114,6 +126,5 @@ WindowsSocket::isValid() const
     return _socket != INVALID_SOCKET;
 }
 
-} // namespace net
 } // namespace core
-} // namespace isock
+} // namespace net

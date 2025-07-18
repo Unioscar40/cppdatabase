@@ -4,7 +4,6 @@
 
 namespace net {
 namespace core {
-namespace isock {
 
 enum class SocketError {
     None = 0,
@@ -23,6 +22,5 @@ std::string errorString(SocketError err);
 
 bool isError(SocketError err);
 
-} // namespace net
 } // namespace core
-} // namespace isock
+} // namespace net
