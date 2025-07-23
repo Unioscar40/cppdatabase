@@ -18,12 +18,10 @@ public:
     virtual std::pair<SocketError, std::unique_ptr<ISocket>> accept() = 0;
     virtual SocketError connect(const std::string &ip, int port) = 0;
     virtual SocketError send(const void* buffer, size_t lenght) = 0;
-    virtual SocketError receive(void* buffer, size_t lenht) = 0;
+    virtual SocketError receive(void* buffer, size_t lenght, int &bytesReceived) = 0;
     virtual void close() = 0;
     virtual bool isValid() const = 0;
 };
-
-
 
 } // namespace core
 } //namespace net

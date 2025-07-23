@@ -39,10 +39,14 @@ WindowsSocket::create()
 SocketError 
 WindowsSocket::bind(int port, const std::string &ip) 
 {
+
+    if (_socket == INVALID_SOCKET) 
+        return SocketError::InvalidSocket;
+
     sockaddr_in hint; 
     hint.sin_family = AF_INET;
-    hint.sin_port = htons(54000);
-    inet_pton(AF_INET, "127.0.0.1", &hint.sin_addr);
+    hint.sin_port = htons(port);
+    inet_pton(AF_INET, ip.c_str(), &hint.sin_addr);
 
     if (::bind(_socket, (sockaddr*)&hint, sizeof(hint)) == SOCKET_ERROR) 
         return SocketError::BindFailed;
@@ -53,7 +57,10 @@ WindowsSocket::bind(int port, const std::string &ip)
 SocketError 
 WindowsSocket::listen()
 {
-    if (::listen(_socket, SOMAXCONN), SOCKET_ERROR) 
+    if (_socket == INVALID_SOCKET) 
+        return SocketError::InvalidSocket;
+
+    if (::listen(_socket, SOMAXCONN) == SOCKET_ERROR) 
         return SocketError::ListenFailed;
     
     return SocketError::None;
@@ -66,6 +73,9 @@ WindowsSocket::accept()
     sockaddr_in client; 
     int clientSize = sizeof(client);
     
+    if (_socket == INVALID_SOCKET) 
+        return std::make_pair<SocketError, std::unique_ptr<ISocket>>(SocketError::InvalidSocket, nullptr);
+
     SOCKET clientSocket = ::accept(_socket, (sockaddr*)&client, &clientSize);
     if (clientSocket == INVALID_SOCKET)
         return std::make_pair<SocketError, std::unique_ptr<ISocket>>(SocketError::AcceptFailed, nullptr);
@@ -79,6 +89,9 @@ WindowsSocket::accept()
 SocketError
 WindowsSocket::connect(const std::string &ip, int port) 
 {
+    if (_socket == INVALID_SOCKET) 
+        return SocketError::InvalidSocket;
+
     sockaddr_in hint;
     hint.sin_family = AF_INET;
     hint.sin_port = htons(port);
@@ -104,12 +117,12 @@ WindowsSocket::send(const void *buffer, size_t length)
 }
 
 SocketError
-WindowsSocket::receive(void* buffer, size_t length) 
+WindowsSocket::receive(void* buffer, size_t length, int &bytesReceived) 
 {
     if (_socket == INVALID_SOCKET) 
         return SocketError::InvalidSocket;
     
-    int bytesReceived = ::recv(_socket, static_cast<char*>(buffer), length, 0);
+    bytesReceived = ::recv(_socket, static_cast<char*>(buffer), length, 0);
     
     return SocketError::None;
 }

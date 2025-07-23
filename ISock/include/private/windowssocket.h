@@ -30,7 +30,7 @@ public:
     std::pair<SocketError, std::unique_ptr<ISocket>> accept() override;
     SocketError connect(const std::string &ip, int port) override;
     SocketError send(const void* buffer, size_t length) override;
-    SocketError receive(void* buffer, size_t length) override;
+    SocketError receive(void* buffer, size_t length, int &bytesReceived) override;
     void close() override;
     bool isValid() const override;
 };
