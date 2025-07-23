@@ -20,5 +20,8 @@ if (WIN32)
     target_sources(${PROJECT_NAME} PRIVATE src/windows/windowssocket.cpp)
     target_link_libraries(${PROJECT_NAME} PUBLIC ws2_32)
 else()
+    find_package(Threads REQUIRED)
+
     target_sources(${PROJECT_NAME} PRIVATE src/unix/unixsocket.cpp)
+    target_link_libraries(${PROJECT_NAME} PRIVATE Threads::Threads)
 endif()
