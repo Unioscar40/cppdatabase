@@ -2,6 +2,8 @@
 
 # ifdef _WIN32
 #include "windowssocket.h"
+#else 
+#include "unixsocket.h"
 # endif
 
 namespace net {
@@ -12,6 +14,8 @@ SocketFactory::createSocket()
 {
 #ifdef _WIN32
     return std::make_unique<WindowsSocket>();
+#else 
+    return std::make_unique<UnixSocket>();
 #endif
 }
 
